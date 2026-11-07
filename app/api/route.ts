@@ -40,7 +40,10 @@ function errorResponse(error: unknown) {
     return json({ error: "FORBIDDEN", message }, 403);
   }
   console.error("API request failed:", error);
-  return json({ error: "SERVER_ERROR", message }, 500);
+  const safeMessage = message.startsWith("Missing required environment variable:")
+    ? "เซิร์ฟเวอร์ยังตั้งค่าระบบไม่ครบ กรุณาแจ้งผู้ดูแล"
+    : "ระบบขัดข้องชั่วคราว กรุณาลองใหม่ภายหลัง";
+  return json({ error: "SERVER_ERROR", message: safeMessage }, 500);
 }
 
 export async function GET(request: NextRequest) {

@@ -10,6 +10,8 @@
 
 อย่าใส่ prefix `NEXT_PUBLIC_` ให้กับค่าเหล่านี้ และอย่า commit `.env` ค่า `SESSION_SECRET` สร้างได้ด้วย `node -e "console.log(require('node:crypto').randomBytes(32).toString('base64url'))"` หลังแก้ `.env` ให้รีสตาร์ตเซิร์ฟเวอร์ Next.js ใน production ให้ตั้งค่าตัวแปรเดียวกันใน Environment Variables ของ deployment โดยใช้ MongoDB URL ของ production
 
+เมื่อนำขึ้น Vercel ให้ตั้ง `MONGODB_URL` และ `SESSION_SECRET` ใน Environment Variables ของโปรเจกต์สำหรับ environment ที่ใช้งาน แล้ว redeploy จากนั้นตรวจว่า MongoDB Atlas อนุญาตการเชื่อมต่อจากเครือข่ายของ Vercel หาก API ตอบ `500` ให้ตรวจ Function Logs ใน Vercel เพื่อดูสาเหตุฝั่งเซิร์ฟเวอร์ โดย API จะไม่ส่งรายละเอียดข้อผิดพลาดภายในกลับไปยังเบราว์เซอร์
+
 ระบบใช้ MongoDB เป็นแหล่งเก็บข้อมูลหลัก ผ่าน collections `users`, `settings`, `replays` และ `sessions` พร้อมสร้างค่า setting เริ่มต้นและ indexes ให้อัตโนมัติ
 
 ผู้ใช้สมัครบัญชีจากหน้าเข้าสู่ระบบได้ โดยบัญชีใหม่จะได้ Role `user` และเห็นหน้าแรกกับคลิปย้อนหลังฟรี แอดมินเลือกได้ตอนเพิ่มคลิปว่าจะให้ดูฟรีหรือเฉพาะสมาชิก แอดมินสามารถกำหนด Role เป็น `member` เพื่อให้มีแท็บสมาชิก หรือ `admin` เพื่อให้จัดการเว็บได้ แอดมินจัดการ Role ได้จากแท็บจัดการผู้ใช้; ระบบไม่อนุญาตให้เปลี่ยน Role ของบัญชีที่กำลังใช้อยู่ และไม่อนุญาตให้ลดสิทธิ์แอดมินบัญชีสุดท้าย
