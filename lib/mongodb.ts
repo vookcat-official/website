@@ -5,11 +5,11 @@ const globalForMongo = globalThis as typeof globalThis & {
 };
 
 function getMongoClient() {
-  const uri = process.env.MONGODB_URI?.trim();
-  if (!uri) throw new Error("Missing required environment variable: MONGODB_URI");
+  const url = process.env.MONGODB_URL?.trim();
+  if (!url) throw new Error("Missing required environment variable: MONGODB_URL");
 
   if (!globalForMongo.mongoClientPromise) {
-    const client = new MongoClient(uri);
+    const client = new MongoClient(url);
     globalForMongo.mongoClientPromise = client.connect().catch((error: unknown) => {
       globalForMongo.mongoClientPromise = undefined;
       throw error;
@@ -20,6 +20,5 @@ function getMongoClient() {
 
 export async function getDatabase() {
   const client = await getMongoClient();
-  const name = process.env.MONGODB_DB?.trim() || "vookcat";
-  return client.db(name);
+  return client.db();
 }
