@@ -874,7 +874,7 @@ export default function Dashboard() {
             id="login-name"
             maxLength={30}
             minLength={3}
-            pattern="[A-Za-z0-9_.-]+"
+            pattern="[A-Za-z0-9_.\\x2d]+"
             autoComplete="username"
             autoCapitalize="none"
             value={loginName}
